@@ -1,0 +1,14 @@
+Analysis & Synthesis Status : Successful - Tue Apr 10 23:43:57 2018
+Quartus Prime Version : 17.1.0 Build 590 10/25/2017 SJ Lite Edition
+Revision Name : lcdlab1
+Top-level Entity Name : lcdlab1
+Family : Cyclone IV E
+Total logic elements : 189
+    Total combinational functions : 179
+    Dedicated logic registers : 114
+Total registers : 114
+Total pins : 191
+Total virtual pins : 0
+Total memory bits : 0
+Embedded Multiplier 9-bit elements : 0
+Total PLLs : 0
