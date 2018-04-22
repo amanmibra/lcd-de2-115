@@ -1,4 +1,4 @@
-module lcd_controller (	
+module LCD_Controller (	
 //	Host Side
 input [7:0] iDATA,
 input iRS,

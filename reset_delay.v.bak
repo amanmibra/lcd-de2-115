@@ -1,4 +1,4 @@
-module reset_delay( input iCLK, output reg oRESET);
+module	Reset_Delay( input iCLK, output reg oRESET);
 reg	[19:0]	Cont;
 
 always@(posedge iCLK)
