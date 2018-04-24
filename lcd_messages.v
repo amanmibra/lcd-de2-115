@@ -2,10 +2,11 @@ module lcd_messages(
 // Host Side
   input iCLK,iRST_N,
 // Server Message input,
-  input [1:0] mess,
-// LCD Side 
+  input [2:0] mess,
+  input [1:0] isServer,
+// LCD Side
   output [7:0] 	LCD_DATA,
-  output LCD_RW,LCD_EN,LCD_RS	
+  output LCD_RW,LCD_EN,LCD_RS
 );
 //	Internal Wires/Registers
 reg	[5:0]	LUT_INDEX;
@@ -24,9 +25,9 @@ parameter	LCD_CH_LINE	=	LCD_LINE1+16;
 parameter	LCD_LINE2	=	LCD_LINE1+16+1;
 parameter	LUT_SIZE	=	LCD_LINE1+32+1;
 
-initial begin 
-	refresh = 1; 
-end 
+initial begin
+	refresh = 1;
+end
 
 always@(posedge iCLK or negedge iRST_N)
 begin
@@ -54,7 +55,7 @@ begin
 					if(mLCD_Done)
 					begin
 						mLCD_Start	<=	0;
-						mLCD_ST		<=	2;					
+						mLCD_ST		<=	2;
 					end
 				end
 			2:	begin
@@ -73,97 +74,172 @@ begin
 			endcase
 		end else if(refresh == 1) begin
 			LUT_INDEX <= 0;
-			
+      // line 1 message value is set here
+      case(isServer)
+        0: begin
+          line1_mess[0] <= clientMessage[0];
+          line1_mess[1] <= clientMessage[1];
+          line1_mess[2] <= clientMessage[2];
+          line1_mess[3] <= clientMessage[3];
+          line1_mess[4] <= clientMessage[4];
+          line1_mess[5] <= clientMessage[5];
+          line1_mess[6] <= clientMessage[6];
+          line1_mess[7] <= clientMessage[7];
+          line1_mess[8] <= clientMessage[8];
+          line1_mess[9] <= clientMessage[9];
+          line1_mess[10] <= clientMessage[10];
+          line1_mess[11] <= clientMessage[11];
+          line1_mess[12] <= clientMessage[12];
+          line1_mess[13] <= clientMessage[13];
+          line1_mess[14] <= clientMessage[14];
+          line1_mess[15] <= clientMessage[15];
+        end
+        1: begin
+          line1_mess[0] <= serverMessage[0];
+          line1_mess[1] <= serverMessage[1];
+          line1_mess[2] <= serverMessage[2];
+          line1_mess[3] <= serverMessage[3];
+          line1_mess[4] <= serverMessage[4];
+          line1_mess[5] <= serverMessage[5];
+          line1_mess[6] <= serverMessage[6];
+          line1_mess[7] <= serverMessage[7];
+          line1_mess[8] <= serverMessage[8];
+          line1_mess[9] <= serverMessage[9];
+          line1_mess[10] <= serverMessage[10];
+          line1_mess[11] <= serverMessage[11];
+          line1_mess[12] <= serverMessage[12];
+          line1_mess[13] <= serverMessage[13];
+          line1_mess[14] <= serverMessage[14];
+          line1_mess[15] <= serverMessage[15];
+        end
+      endcase
 			// line 2 message value is set here
 			case (mess)
-				0: begin 
-					line2_mess[0] <= message0[0];
-					line2_mess[1] <= message0[1];
-					line2_mess[2] <= message0[2];
-					line2_mess[3] <= message0[3];
-					line2_mess[4] <= message0[4];
-					line2_mess[5] <= message0[5];
-					line2_mess[6] <= message0[6];
-					line2_mess[7] <= message0[7];
-					line2_mess[8] <= message0[8];
-					line2_mess[9] <= message0[9];
-					line2_mess[10] <= message0[10];
-					line2_mess[11] <= message0[11];
-					line2_mess[12] <= message0[12];
-					line2_mess[13] <= message0[13];
-					line2_mess[14] <= message0[14];
-					line2_mess[15] <= message0[15];
+				0: begin
+          line2_mess[0] <= 9'h173;
+          line2_mess[1] <= 9'h168;
+          line2_mess[2] <= 9'h176;
+          line2_mess[3] <= 9'h169;
+          line2_mess[4] <= 9'h146;
+          line2_mess[5] <= 9'h146;
+          line2_mess[6] <= 9'h146;
+          line2_mess[7] <= 9'h120;
+          line2_mess[8] <= 9'h120;
+          line2_mess[9] <= 9'h120;
+          line2_mess[10] <= 9'h120;
+          line2_mess[11] <= 9'h120;
+          line2_mess[12] <= 9'h120;
+          line2_mess[13] <= 9'h120;
+          line2_mess[14] <= 9'h120;
+          line2_mess[15] <= 9'h120;
+
 				end
-				1: begin 
-					line2_mess[0] <= message1[0];
-					line2_mess[1] <= message1[1];
-					line2_mess[2] <= message1[2];
-					line2_mess[3] <= message1[3];
-					line2_mess[4] <= message1[4];
-					line2_mess[5] <= message1[5];
-					line2_mess[6] <= message1[6];
-					line2_mess[7] <= message1[7];
-					line2_mess[8] <= message1[8];
-					line2_mess[9] <= message1[9];
-					line2_mess[10] <= message1[10];
-					line2_mess[11] <= message1[11];
-					line2_mess[12] <= message1[12];
-					line2_mess[13] <= message1[13];
-					line2_mess[14] <= message1[14];
-					line2_mess[15] <= message1[15];
+				4: begin
+          line2_mess[0] <= message0[0];
+          line2_mess[1] <= message0[1];
+          line2_mess[2] <= message0[2];
+          line2_mess[3] <= message0[3];
+          line2_mess[4] <= message0[4];
+          line2_mess[5] <= message0[5];
+          line2_mess[6] <= message0[6];
+          line2_mess[7] <= message0[7];
+          line2_mess[8] <= message0[8];
+          line2_mess[9] <= message0[9];
+          line2_mess[10] <= message0[10];
+          line2_mess[11] <= message0[11];
+          line2_mess[12] <= message0[12];
+          line2_mess[13] <= message0[13];
+          line2_mess[14] <= message0[14];
+          line2_mess[15] <= message0[15];
 				end
-				2: begin
-					line2_mess[0] <= message2[0];
-					line2_mess[1] <= message2[1];
-					line2_mess[2] <= message2[2];
-					line2_mess[3] <= message2[3];
-					line2_mess[4] <= message2[4];
-					line2_mess[5] <= message2[5];
-					line2_mess[6] <= message2[6];
-					line2_mess[7] <= message2[7];
-					line2_mess[8] <= message2[8];
-					line2_mess[9] <= message2[9];
-					line2_mess[10] <= message2[10];
-					line2_mess[11] <= message2[11];
-					line2_mess[12] <= message2[12];
-					line2_mess[13] <= message2[13];
-					line2_mess[14] <= message2[14];
-					line2_mess[15] <= message2[15];
+				5: begin
+          line2_mess[0] <= message1[0];
+          line2_mess[1] <= message1[1];
+          line2_mess[2] <= message1[2];
+          line2_mess[3] <= message1[3];
+          line2_mess[4] <= message1[4];
+          line2_mess[5] <= message1[5];
+          line2_mess[6] <= message1[6];
+          line2_mess[7] <= message1[7];
+          line2_mess[8] <= message1[8];
+          line2_mess[9] <= message1[9];
+          line2_mess[10] <= message1[10];
+          line2_mess[11] <= message1[11];
+          line2_mess[12] <= message1[12];
+          line2_mess[13] <= message1[13];
+          line2_mess[14] <= message1[14];
+          line2_mess[15] <= message1[15];
 				end
-				3: begin
-					line2_mess[0] <= 9'h120;
-					line2_mess[1] <= 9'h120;
-					line2_mess[2] <= 9'h120;
-					line2_mess[3] <= 9'h120;
-					line2_mess[4] <= 9'h120;
-					line2_mess[5] <= 9'h120;
-					line2_mess[6] <= 9'h120;
-					line2_mess[7] <= 9'h120;
-					line2_mess[8] <= 9'h120;
-					line2_mess[9] <= 9'h120;
-					line2_mess[10] <= 9'h120;
-					line2_mess[11] <= 9'h120;
-					line2_mess[12] <= 9'h120;
-					line2_mess[13] <= 9'h120;
-					line2_mess[14] <= 9'h120;
-					line2_mess[15] <= 9'h120;
+				1: begin
+          line2_mess[0] <= message2[0];
+          line2_mess[1] <= message2[1];
+          line2_mess[2] <= message2[2];
+          line2_mess[3] <= message2[3];
+          line2_mess[4] <= message2[4];
+          line2_mess[5] <= message2[5];
+          line2_mess[6] <= message2[6];
+          line2_mess[7] <= message2[7];
+          line2_mess[8] <= message2[8];
+          line2_mess[9] <= message2[9];
+          line2_mess[10] <= message2[10];
+          line2_mess[11] <= message2[11];
+          line2_mess[12] <= message2[12];
+          line2_mess[13] <= message2[13];
+          line2_mess[14] <= message2[14];
+          line2_mess[15] <= message2[15];
 				end
+        2: begin
+          line2_mess[0] <= message2[0];
+          line2_mess[1] <= message2[1];
+          line2_mess[2] <= message2[2];
+          line2_mess[3] <= message2[3];
+          line2_mess[4] <= message2[4];
+          line2_mess[5] <= message2[5];
+          line2_mess[6] <= message2[6];
+          line2_mess[7] <= message2[7];
+          line2_mess[8] <= message2[8];
+          line2_mess[9] <= message2[9];
+          line2_mess[10] <= message2[10];
+          line2_mess[11] <= message2[11];
+          line2_mess[12] <= message2[12];
+          line2_mess[13] <= message2[13];
+          line2_mess[14] <= message2[14];
+          line2_mess[15] <= message2[15];
+        end
+        3: begin
+          line2_mess[0] <= message2[0];
+          line2_mess[1] <= message2[1];
+          line2_mess[2] <= message2[2];
+          line2_mess[3] <= message2[3];
+          line2_mess[4] <= message2[4];
+          line2_mess[5] <= message2[5];
+          line2_mess[6] <= message2[6];
+          line2_mess[7] <= message2[7];
+          line2_mess[8] <= message2[8];
+          line2_mess[9] <= message2[9];
+          line2_mess[10] <= message2[10];
+          line2_mess[11] <= message2[11];
+          line2_mess[12] <= message2[12];
+          line2_mess[13] <= message2[13];
+          line2_mess[14] <= message2[14];
+          line2_mess[15] <= message2[15];
+        end
 			endcase
 		end
 	end
 end
 
-reg [31:0] counter; 
-reg refresh; 
+reg [31:0] counter;
+reg refresh;
 always@(posedge iCLK) begin: increment_counter
 	if(counter == 27'h5F5E100) begin
 		refresh <= 1;
 		counter <= 0;
-	end else begin 
+	end else begin
 		counter <= counter + 1;
-		refresh <= 0; 
-	end 
-end 
+		refresh <= 0;
+	end
+end
 
 /** Message Arrays **/
 reg [9:0] line1_mess [15:0];
@@ -206,28 +282,65 @@ assign message1[13] = 9'h120;
 assign message1[14] = 9'h120;
 assign message1[15] = 9'h120;
 
-// Page Sent
+// Page #(Number) Sent
 wire [9:0] message2 [15:0];
 assign message2[0] = 9'h150; // P
 assign message2[1] = 9'h161; // a
 assign message2[2] = 9'h167; // g
 assign message2[3] = 9'h165; // e
 assign message2[4] = 9'h120;
-assign message2[5] = 9'h153; // S
-assign message2[6] = 9'h165;
-assign message2[7] = 9'h16e;
-assign message2[8] = 9'h174;
-assign message2[9] = 9'h120;
-assign message2[10] = 9'h120;
+assign message2[5] = ( mess == 1 ? 9'h149 : ( mess == 2 ? 9'h150 : (mess == 3 ? 9'h151 : 9'h120))); // Number
+assign message2[6] = 9'h120;
+assign message2[7] = 9'h153; // S
+assign message2[8] = 9'h165;
+assign message2[9] = 9'h16e;
+assign message2[10] = 9'h174;
 assign message2[11] = 9'h120;
 assign message2[12] = 9'h120;
 assign message2[13] = 9'h120;
 assign message2[14] = 9'h120;
 assign message2[15] = 9'h120;
 
+/** Client/Server Status message **/
+wire [9:0] clientMessage [15:0];
+assign clientMessage[0] = 9'h167; // CLIENT STATUS
+assign clientMessage[1] = 9'h176;
+assign clientMessage[2] = 9'h173;
+assign clientMessage[3] = 9'h169;
+assign clientMessage[4] = 9'h178;
+assign clientMessage[5] = 9'h184;
+assign clientMessage[6] = 9'h120;
+assign clientMessage[7] = 9'h153;
+assign clientMessage[8] = 9'h154;
+assign clientMessage[9] = 9'h141;
+assign clientMessage[10] = 9'h154;
+assign clientMessage[11] = 9'h155;
+assign clientMessage[12] = 9'h153;
+assign clientMessage[13] = 9'h120;
+assign clientMessage[14] = 9'h120;
+assign clientMessage[15] = 9'h120;
+
+wire [9:0] serverMessage [15:0];
+assign serverMessage[0] = 9'h153; // SERVER STATUS
+assign serverMessage[1] = 9'h145;
+assign serverMessage[2] = 9'h152;
+assign serverMessage[3] = 9'h156;
+assign serverMessage[4] = 9'h145;
+assign serverMessage[5] = 9'h152;
+assign serverMessage[6] = 9'h120;
+assign serverMessage[7] = 9'h153;
+assign serverMessage[8] = 9'h154;
+assign serverMessage[9] = 9'h141;
+assign serverMessage[10] = 9'h154;
+assign serverMessage[11] = 9'h155;
+assign serverMessage[12] = 9'h153;
+assign serverMessage[13] = 9'h120;
+assign serverMessage[14] = 9'h120;
+assign serverMessage[15] = 9'h120;
+
 always@(posedge iCLK)
 begin
-	
+
 	case(LUT_INDEX)
 	//	Initial
 	LCD_INTIAL+0:	LUT_DATA	<=	9'h038;
@@ -236,22 +349,22 @@ begin
 	LCD_INTIAL+3:	LUT_DATA	<=	9'h006;
 	LCD_INTIAL+4:	LUT_DATA	<=	9'h080;
 	//	Line 1
-	LCD_LINE1+0:	LUT_DATA	<=	9'h157;	//	WEBSERVER STATUS
-	LCD_LINE1+1:	LUT_DATA	<=	9'h145;
-	LCD_LINE1+2:	LUT_DATA	<=	9'h142;
-	LCD_LINE1+3:	LUT_DATA	<=	9'h153;
-	LCD_LINE1+4:	LUT_DATA	<=	9'h145;
-	LCD_LINE1+5:	LUT_DATA	<=	9'h152;
-	LCD_LINE1+6:	LUT_DATA	<=	9'h156;
-	LCD_LINE1+7:	LUT_DATA	<=	9'h145;
-	LCD_LINE1+8:	LUT_DATA	<=	9'h152;
-	LCD_LINE1+9:	LUT_DATA	<=	9'h120;
-	LCD_LINE1+10:	LUT_DATA	<=	9'h153;
-	LCD_LINE1+11:	LUT_DATA	<=	9'h154;
-	LCD_LINE1+12:	LUT_DATA	<=	9'h141;
-	LCD_LINE1+13:	LUT_DATA	<=	9'h154;
-	LCD_LINE1+14:	LUT_DATA	<=	9'h155;
-	LCD_LINE1+15:	LUT_DATA	<=	9'h153;
+	LCD_LINE1+0:	LUT_DATA	<=	line1_mess[0];	//	WEBSERVER STATUS
+	LCD_LINE1+1:	LUT_DATA	<=	line1_mess[1];
+	LCD_LINE1+2:	LUT_DATA	<=	line1_mess[2];
+	LCD_LINE1+3:	LUT_DATA	<=	line1_mess[3];
+	LCD_LINE1+4:	LUT_DATA	<=	line1_mess[4];
+	LCD_LINE1+5:	LUT_DATA	<=	line1_mess[5];
+	LCD_LINE1+6:	LUT_DATA	<=	line1_mess[6];
+	LCD_LINE1+7:	LUT_DATA	<=	line1_mess[7];
+	LCD_LINE1+8:	LUT_DATA	<=	line1_mess[8];
+	LCD_LINE1+9:	LUT_DATA	<=	line1_mess[9];
+	LCD_LINE1+10:	LUT_DATA	<=	line1_mess[10];
+	LCD_LINE1+11:	LUT_DATA	<=	line1_mess[11];
+	LCD_LINE1+12:	LUT_DATA	<=	line1_mess[12];
+	LCD_LINE1+13:	LUT_DATA	<=	line1_mess[13];
+	LCD_LINE1+14:	LUT_DATA	<=	line1_mess[14];
+	LCD_LINE1+15:	LUT_DATA	<=	line1_mess[15];
 	//	Change Line
 	LCD_CH_LINE:	LUT_DATA	<=	9'h0C0;
 	//	Line 2

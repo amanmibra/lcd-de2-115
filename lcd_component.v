@@ -7,7 +7,8 @@ module lcd_component(
   output LCD_EN,	// LCD Enable
   output LCD_RS,	// LCD Command/Data Select, 0 = Command, 1 = Data
   inout [7:0] LCD_DATA,	// LCD Data bus 8 bits
-  input [1:0] mess // MESSAGE STATUS (see lcd_test)
+  input [2:0] mess // MESSAGE STATUS (see lcd_test)
+  input [1:0] isServer // SERVER STATUS (see lcd_test)
 );
 
 //	All inout port turn to tri-state
